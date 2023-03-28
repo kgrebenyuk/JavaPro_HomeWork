@@ -1,13 +1,9 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.domain.Foto;
-import com.example.demowithtests.repository.Repository;
+import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.util.*;
-import lombok.Data;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.event.Level;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -16,7 +12,6 @@ import java.util.Arrays;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 //import static java.lang.System.Logger.Level.DEBUG;
 //import static org.apache.logging.log4j.util.LowLevelLogUtil.log;
@@ -26,11 +21,11 @@ import java.util.logging.Logger;
 @Slf4j
 @org.springframework.stereotype.Service
 public class ServiceBean implements Service {
-    private final Repository repository;
+    private final EmployeeRepository repository;
 
     //  private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
-    public ServiceBean(Repository repository) {
+    public ServiceBean(EmployeeRepository repository) {
         this.repository = repository;
     }
 
@@ -116,13 +111,11 @@ public class ServiceBean implements Service {
             }
         }
         throw new ListHasNoAnyElementsException();
-
-
     }
 
 
     public void mailSender(List<String> emails, String text) {
-        log.info("---->>  Emails sent successfully ", emails);
+        log.info("---->> mailSender ->  Text: '" + text + "' was sent to: " + emails);
     }
 
     @Override
@@ -144,8 +137,6 @@ public class ServiceBean implements Service {
 
         return employees;
     }
-
-
 
 /*    @Override
     public void fillingDataBase(String quantityString) {
@@ -211,18 +202,11 @@ public class ServiceBean implements Service {
         return emails;
     }
 
-//    @Override
-//    public Employee createrEmployee(String name, String country, String email) {
-//        return new Employee(name, country, email);
-//    }
-
     @Override
-    public Employee createrEmployee(String name, String country, String email ) {
+    public Employee createrEmployee(String name, String country, String email) {
         return new Employee(name, country, email);
     }
 
-
-////////////////////////////////////
 
     @Override
     public String randomCountry(String countriesList) {
@@ -269,9 +253,21 @@ public class ServiceBean implements Service {
         List<Employee> employees = repository.findEmployeeOldFoto(data);
         mailSender(getterEmailsOfEmployees(employees), text);
 
-        log.info(" --->> List of employees with old foto: ", employees);
+        log.info(" --->> List of employees with old foto: " + employees);
 
         return employees;
     }
 
+    @Override
+    public void metricsByCountry(String fromCountry, String toCountry, String text) {
+//    public List<Employee> metricsByCountry(String fromCountry, String toCountry) {
+//        List<Employee> allEmployee = repository.findEmployeeChangedCountry(country);
+//
+//         allEmployee.stream()
+//                .filter(employee -> employee.getAddresses().stream()
+//                        .anyMatch(address -> address.getCountry().equals(country)))
+//                .collect(Collectors.toList());
+
+        mailSender(repository.findEmployeeChangedCountry( fromCountry,  toCountry), text);
+    }
 }
