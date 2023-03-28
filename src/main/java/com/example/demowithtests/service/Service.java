@@ -29,22 +29,21 @@ public interface Service {
 
     Employee createrEmployee(String name, String country, String email);
 
-
-
     void updaterByCountryFully(String countries);
-
 
     List<Employee> processor();
 
-
 //////////////////////
     String randomCountry(String countriesList);
- //   void fillDB(String numberOfTimes, String countriesString);
+
     void fillDB(int numberOfTimes, String countriesString);
 
     void updateAllByCountry(String newCountry);
 
     void updateAllByCountrySmart(String oldCountry, String newCountry);
+
+ //   List<Employee> metricsByCountry(String fromCountry, String toCountry);
+    void metricsByCountry(String fromCountry, String toCountry, String text);
 
 
 }

@@ -13,6 +13,7 @@ public interface Mapper {
     @Mapping(target="email", source="employeeDto.email")
     @Mapping(target="fotos", source="employeeDto.fotos")
     @Mapping(target="addresses", source="employeeDto.addresses")
+    @Mapping(target="isDeleted", source="employeeDto.isDeleted")
     Employee employeeDtoToEmployee(EmployeeDto employeeDto);
 
     @Mapping(target="name", source="employee.name")
