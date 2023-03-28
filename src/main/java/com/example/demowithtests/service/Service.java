@@ -25,6 +25,8 @@ public interface Service {
 
     List<Employee> sendEmailByCity(String city, String text);
 
+    List<Employee> sendEmailOldFoto( String text);
+
     Employee createrEmployee(String name, String country, String email);
 
 

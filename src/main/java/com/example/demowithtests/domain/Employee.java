@@ -29,8 +29,13 @@ public class Employee {
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses = new HashSet<>();
 
-    /*@OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
-    private List<Address> addresses;*/
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id")
+    private Set<Foto> fotos = new HashSet<>();
+
+
+
+
 
 
     public Employee(String name, String country, String email) {
@@ -74,6 +79,14 @@ public class Employee {
         this.country = country;
     }
 
+    public void setFotos(Set<Foto> fotos) {
+        this.fotos = fotos;
+    }
+
+    public Set<Foto> getFotos() {
+        return fotos;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -98,15 +111,15 @@ public class Employee {
         this.addresses = addresses;
     }
 
+
     @Override
     public String toString() {
         return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 ", email='" + email + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", addresses=" + addresses +
+                ", fotos=" + fotos +
                 '}';
     }
 }

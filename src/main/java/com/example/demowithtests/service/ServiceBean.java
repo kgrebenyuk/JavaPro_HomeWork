@@ -1,15 +1,20 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.Foto;
 import com.example.demowithtests.repository.Repository;
 import com.example.demowithtests.util.*;
+import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,7 +28,7 @@ import java.util.logging.Logger;
 public class ServiceBean implements Service {
     private final Repository repository;
 
-  //  private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
+    //  private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
     public ServiceBean(Repository repository) {
         this.repository = repository;
@@ -33,12 +38,9 @@ public class ServiceBean implements Service {
     // @SneakyThrows
     @Override
     public Employee create(Employee employee) {
-        if (repository.findEmployeeByEmail(employee.getEmail()) == null) {
-            if (employee.getEmail() == null) {
-                throw new EmailAbsentException();
-            }
-            return repository.save(employee);
-        }
+        if (employee.getEmail() == null) throw new EmailAbsentException();
+//      if (repository.findEmployeeByEmail(employee.getEmail()) != null) throw new EmailDoubledException();
+
         return repository.save(employee);
     }
 
@@ -56,7 +58,7 @@ public class ServiceBean implements Service {
 
     @Override
     public Employee getById(String id) {
-       // log.debug("----> getById() - start: id = {}", id);
+        // log.debug("----> getById() - start: id = {}", id);
 
         try {
             Integer employeeId = Integer.parseInt(id);
@@ -66,12 +68,12 @@ public class ServiceBean implements Service {
                 throw new ResourceWasDeletedException();
             }
 
-          //  log.debug("----> getById() -try  employee = {}", employee);
+            //  log.debug("----> getById() -try  employee = {}", employee);
 
             return employee;
         } catch (NumberFormatException exception) {
 
-          //  log.debug("----> getById() - end: employee = {}", exception);
+            //  log.debug("----> getById() - end: employee = {}", exception);
 
             throw new WrongDataException();
 
@@ -120,7 +122,7 @@ public class ServiceBean implements Service {
 
 
     public void mailSender(List<String> emails, String text) {
-        //log.info("Emails sended");
+        log.info("---->>  Emails sent successfully ", emails);
     }
 
     @Override
@@ -139,8 +141,11 @@ public class ServiceBean implements Service {
             employees.addAll(employeesByCity);
         }
         mailSender(getterEmailsOfEmployees(employees), text);
+
         return employees;
     }
+
+
 
 /*    @Override
     public void fillingDataBase(String quantityString) {
@@ -249,6 +254,19 @@ public class ServiceBean implements Service {
                 employee.setCountry(newCountry);
                 repository.save(employee);
             }
+    }
+
+    @Override
+    public List<Employee> sendEmailOldFoto(String text) {
+        Date data = Date.from(Instant.now());
+        data.setYear(data.getYear() - 1);
+
+        List<Employee> employees = repository.findEmployeeOldFoto(data);
+        mailSender(getterEmailsOfEmployees(employees), text);
+
+        log.info(" --->> List of employees with old foto: ", employees);
+
+        return employees;
     }
 
 }

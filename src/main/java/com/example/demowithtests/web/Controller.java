@@ -19,7 +19,6 @@ import java.util.List;
 //import java.util.logging.Logger;
 
 
-
 @Slf4j
 @RestController
 //@AllArgsConstructor
@@ -29,7 +28,7 @@ public class Controller {
     private final Service service;
     private final Mapper mapper;
 
- //   private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
+    //   private static final Logger log = Logger.getLogger(ServiceBean.class.getName());
 
 
     public Controller(Service service, Mapper mapper) {
@@ -38,7 +37,7 @@ public class Controller {
     }
 
 
-/////////////////
+    /////////////////
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,7 +65,6 @@ public class Controller {
 ////////////////////////////
 
 
-
     //Получение списка юзеров
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
@@ -86,9 +84,9 @@ public class Controller {
     @ResponseStatus(HttpStatus.OK)
     public EmployeeReadDto getEmployeeById(@PathVariable String id) {
 
-        log.info("----> getEmployeeById() - start: id = {}"+ id);
+        log.info("----> getEmployeeById() - start: id = {}" + id);
 
-        EmployeeReadDto eRDTO = mapper.employeeToEmployeeReadDto( service.getById(id));
+        EmployeeReadDto eRDTO = mapper.employeeToEmployeeReadDto(service.getById(id));
 
         log.info("----> getEmployeeById() - end: EmployeeReadDto = {}" + eRDTO);
 
@@ -111,7 +109,7 @@ public class Controller {
     @PatchMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployeeById(@PathVariable String id) {
-        log.info("----> removeEmployeeById - start: id = {}"+ id);
+        log.info("----> removeEmployeeById - start: id = {}" + id);
 
         Integer parseId = Integer.parseInt(id);
         service.removeById(parseId);
@@ -140,31 +138,11 @@ public class Controller {
         service.sendEmailByCity(cities, text);
     }
 
- /*   @PostMapping("/fillingDataBase/{quantity}")
-    @ResponseStatus(HttpStatus.OK)
-    public void fillingDataBase(@PathVariable String quantity) {
-        service.fillingDataBase(quantity);
-    }
- */
-
-
-//    @PostMapping ("/fillDB/{numberOfTimes}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void fillDB(@PathVariable int numberOfTimes) {
-//        service.fillDB(numberOfTimes);
-//        //log.info ("--> DB was Filled by ");
-//    }
-
-
-
-
-
     @PostMapping("/updateBaseByCountryFully")
     @ResponseStatus(HttpStatus.OK)
     public void updateByCountryFully(@RequestParam String countries) {
         service.updaterByCountryFully(countries);
     }
-
 
 
     @PostMapping("/replaceNull")
@@ -173,12 +151,12 @@ public class Controller {
         service.processor();
     }
 
-///////-----------
-    @GetMapping ("/fillDB")
+    ///////-----------
+    @GetMapping("/fillDB")
     @ResponseStatus(HttpStatus.OK)
-    public void fillDB(@RequestParam int numberOfTimes,@RequestParam  String countriesList) {
-        service.fillDB( numberOfTimes, countriesList);
-     }
+    public void fillDB(@RequestParam int numberOfTimes, @RequestParam String countriesList) {
+        service.fillDB(numberOfTimes, countriesList);
+    }
 
     @GetMapping("/updateAllByCountry")
     @ResponseStatus(HttpStatus.OK)
@@ -190,6 +168,13 @@ public class Controller {
     @ResponseStatus(HttpStatus.OK)
     public void updateAllByCountrySmart(@RequestParam String oldCountry, @RequestParam String newCountry) {
         service.updateAllByCountrySmart(oldCountry, newCountry);
+    }
+
+    @PostMapping("/sendEmailOldFoto")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> sendEmailOldFoto(@RequestParam String text) {
+        return service.sendEmailOldFoto(text);
+
     }
 
 }

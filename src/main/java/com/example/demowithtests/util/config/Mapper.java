@@ -11,11 +11,16 @@ public interface Mapper {
     @Mapping(target="name", source="employeeDto.name")
     @Mapping(target="country", source="employeeDto.country")
     @Mapping(target="email", source="employeeDto.email")
+    @Mapping(target="fotos", source="employeeDto.fotos")
+    @Mapping(target="addresses", source="employeeDto.addresses")
     Employee employeeDtoToEmployee(EmployeeDto employeeDto);
+
     @Mapping(target="name", source="employee.name")
     @Mapping(target="country", source="employee.country")
     @Mapping(target="email", source="employee.email")
-    EmployeeDto employeeToEmployeeDto(Employee employee);
+    @Mapping(target="fotos", source="employee.fotos")
+    @Mapping(target="addresses", source="employee.addresses")
+    EmployeeDto  employeeToEmployeeDto(Employee employee);
 
     @Mapping(target="name", source="employee.name")
     @Mapping(target="email", source="employee.email")
