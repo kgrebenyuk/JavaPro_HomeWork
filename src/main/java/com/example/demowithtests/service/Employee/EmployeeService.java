@@ -1,19 +1,19 @@
-package com.example.demowithtests.service;
+package com.example.demowithtests.service.Employee;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.Passport;
+import com.example.demowithtests.util.MyGlobalExceptionHandler;
 import com.example.demowithtests.util.UserIsNotExistException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public interface Service {
+public interface EmployeeService {
 
     Employee create(Employee employee);
 
     List<Employee> getAll();
 
-    Employee getById(String id);
+    Employee getById(Integer id);
 
     Employee updateById(Integer id, Employee plane) throws UserIsNotExistException;
 
@@ -25,15 +25,14 @@ public interface Service {
 
     List<Employee> sendEmailByCity(String city, String text);
 
-    List<Employee> sendEmailOldFoto( String text);
+    List<Employee> sendEmailOldFoto(String text);
 
-    Employee createrEmployee(String name, String country, String email);
+ //   Employee createrEmployee(String name, String country, String email);
 
     void updaterByCountryFully(String countries);
 
     List<Employee> processor();
 
-//////////////////////
     String randomCountry(String countriesList);
 
     void fillDB(int numberOfTimes, String countriesString);
@@ -42,8 +41,13 @@ public interface Service {
 
     void updateAllByCountrySmart(String oldCountry, String newCountry);
 
- //   List<Employee> metricsByCountry(String fromCountry, String toCountry);
-    void metricsByCountry(String fromCountry, String toCountry, String text);
+    List<String> metricsByCountry(String fromCountry, String toCountry, String text);
+
+    Employee addPassport(Integer employeeId, Integer passportId);
+
+    Employee addPassport(Integer employeeId);
+
+    Employee addWorkplace(Integer employeeId, Integer workplaceId, Integer maxEmployees) throws MyGlobalExceptionHandler;
 
 
 }

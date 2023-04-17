@@ -2,23 +2,34 @@ package com.example.demowithtests.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-@Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "passports")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 public class Passport {
-    private int id;
-    private String fisrtName;
-    private String secondName;
-    private final  UUID serialNumber = UUID.randomUUID();
-    private LocalDate birthDate;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private final  UUID serialNumber = UUID.randomUUID();
+    private String firstName;
+    private String secondName;
+    private LocalDate birthDate;
+    private Boolean isFree = Boolean.TRUE;
+
+    @OneToOne(mappedBy = "passport")
+    private Employee employee;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "passport_id")
+    private Set<Registration> registrations = new HashSet<>();
 
 }

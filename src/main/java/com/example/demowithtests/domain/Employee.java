@@ -1,8 +1,6 @@
 package com.example.demowithtests.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 //import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
@@ -14,6 +12,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 public class Employee {
 
     @Id
@@ -25,13 +25,22 @@ public class Employee {
     private String email;
     private Boolean isDeleted = Boolean.FALSE;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Set<Foto> fotos = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "passport_id",referencedColumnName = "id")
+    private Passport passport;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private Set<Workplace> workplaces=new HashSet<>();
+
 
     public Employee(String name, String country, String email) {
         this.name = name;
@@ -40,8 +49,6 @@ public class Employee {
         this.isDeleted = Boolean.FALSE;
     }
 
-//    public Employee() {
-//    }
 
     public Boolean getIsDeleted() {
         return isDeleted;
@@ -111,11 +118,11 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 ", email='" + email + '\'' +
-                ", addresses=" + addresses +
-                ", fotos=" + fotos +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

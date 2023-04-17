@@ -1,8 +1,12 @@
 package com.example.demowithtests.service.Passport;
 
-import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.Passport;
+import java.util.List;
 
 public interface PassportService {
-    Employee getById(String id);
+    Passport create(Passport passport);
+    List<Passport> getAll();
+    Passport getById(Integer id);
+    Passport updateById(Integer id, Passport plane);
 
 }

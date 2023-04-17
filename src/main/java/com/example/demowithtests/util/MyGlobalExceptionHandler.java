@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MyGlobalExceptionHandler {
+public class MyGlobalExceptionHandler extends Throwable {
     private String message;
 }

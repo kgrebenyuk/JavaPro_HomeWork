@@ -1,17 +1,15 @@
-package com.example.demowithtests.dto;
+package com.example.demowithtests.dto.Employee;
 
-import com.example.demowithtests.domain.Address;
-import com.example.demowithtests.domain.Foto;
+import com.example.demowithtests.dto.Passport.PassportResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.Entity;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 
-public class EmployeeDto {
+public class EmployeeRequestDto {
 
     @Schema(description = "Name of an employee.", example = "Billy", required = true)
     public String name;
@@ -21,14 +19,14 @@ public class EmployeeDto {
 
     @Schema(description = "Email of an employee.", example = "Billy@gmail.com", required = true)
     public String email;
-
     @Schema(description = "Creation Time of an employee.", example = "", required = false)
     public Date creationTime = Date.from(Instant.now());
+    @Schema(description = "isDeleted passport?.", example = "", required = false)
     public Boolean isDeleted = Boolean.FALSE;
-
     @Schema(description = "Fotos of an employee.", example = "", required = true)
     public Set<FotoDto> fotos = new HashSet<>();
     @Schema(description = "Addresses of an employee.", example = "", required = true)
     public Set<AddressDto> addresses = new HashSet<>();
+
 
 }
