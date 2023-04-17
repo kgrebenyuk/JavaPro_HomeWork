@@ -49,5 +49,8 @@ public interface EmployeeService {
 
     Employee addWorkplace(Integer employeeId, Integer workplaceId, Integer maxEmployees) throws MyGlobalExceptionHandler;
 
+    public Employee save(Employee employee);
 
+    public void  testDetach(Integer id);
+    public void testJoinRemove(Integer id);
 }

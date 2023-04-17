@@ -169,4 +169,26 @@ public interface EmployeeController {
     @PostMapping("/employee/{id}/workplace/{workplaceId}/maxEmployees/{maxEmployees}")
     @ResponseStatus(HttpStatus.OK)
     EmployeeResponseDto addWorkplace(@PathVariable("id") Integer id, @PathVariable("workplaceId") Integer workplaceId, @PathVariable("maxEmployees") Integer maxEmployees) throws MyGlobalExceptionHandler;
+
+    @Operation(summary = "This is endpoint to add the employee by Entity Manager.", description = "Create request to add the employee by Entity Manager.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+    @PostMapping("/newSaveUser")
+    @ResponseStatus(HttpStatus.CREATED)
+    void newSaveUser(@RequestBody Employee employee);
+
+
+    @Operation(summary = "Try to remove the detached employee by id.", description = "Try to remove the detached employee by id.", tags = {"Employee"})
+    @GetMapping("/testRemoveDetached/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void testDetach(@PathVariable Integer id);
+
+    @Operation(summary = "Try to remove the detached employee by id after join", description = "Try to remove the detached employee by id after join", tags = {"Employee"})
+    @GetMapping("/testRemoveJoined/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void testJoinRemove(@PathVariable Integer id);
+
 }

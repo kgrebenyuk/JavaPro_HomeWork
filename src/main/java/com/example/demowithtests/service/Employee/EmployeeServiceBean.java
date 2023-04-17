@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,30 @@ public class EmployeeServiceBean implements EmployeeService {
     private final PassportService passportService;
 
     private final WorkplaceService workplaceService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public Employee save(Employee employee) {
+   //     entityManager.persist(employee);
+       return entityManager.merge(employee);
+    }
+
+    @Transactional
+    public void testDetach(Integer id) {
+ //       Employee employee = employeeRepository.findById(id).orElseThrow(IdIsNotExistException:: new);
+        Employee employee = entityManager.find(Employee.class, id);
+        entityManager.detach(employee);
+        entityManager.remove(employee);
+    }
+
+    @Transactional
+    public void testJoinRemove(Integer id) {
+        Employee employee = entityManager.find(Employee.class, id);
+        entityManager.joinTransaction();
+        entityManager.remove(employee);
+    }
 
 
     @Override
@@ -254,7 +280,7 @@ public class EmployeeServiceBean implements EmployeeService {
         Integer usedNumber = workplaceRepository.findNumberEmployeesInWorkplace(workplaceId);
         if (maxEmployees <= usedNumber) {
             log.info("Service ==> addWorkplace(): Not enough space in selected Workplace, already used = {}", usedNumber);
-            throw new MyGlobalExceptionHandler("Not enough space in selected Workplace, already used " +  usedNumber);
+            throw new MyGlobalExceptionHandler("Not enough space in selected Workplace, already used " + usedNumber);
         }
 
         Workplace workplace = workplaceService.getById(workplaceId);

@@ -188,4 +188,22 @@ public class EmployeeControllerBean implements EmployeeController {
         return employeeResponseDto;
     }
 
+    @Override
+    public void newSaveUser(Employee employee) {
+        log.info("----> save - start: employee = {}", employee);
+        employeeService.save(employee);
+    }
+
+    @Override
+    public void testDetach(Integer id) {
+        log.info("----> testDetach() - start: id) = {}", id);
+        employeeService.testDetach(id);
+    }
+
+    @Override
+    public void testJoinRemove(Integer id) {
+        log.info("----> testJoinRemove() - start: id) = {}", id);
+        employeeService.testJoinRemove(id);
+    }
+
 }
