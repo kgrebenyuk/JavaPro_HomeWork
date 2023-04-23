@@ -23,17 +23,28 @@ public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    Employee employee = Employee.builder()
+            .name("Mark")
+            .country("England")
+            .email("123@gmail.com")
+            .isDeleted(false)
+            .build();
+
+    Employee employee2 = Employee.builder()
+            .name("Mark2")
+            .country("England2")
+            .email("2_123@gmail.com")
+            .isDeleted(false)
+            .build();
+
     @Test
     @Order(1)
     @Rollback(value = false)
     public void saveEmployeeTest() {
 
 
-      Employee employee = Employee.builder().name("Mark").country("England").build();
-//        Employee employee = new Employee();
-//        employee.setName("Mark");
-
         employeeRepository.save(employee);
+        employeeRepository.save(employee2);
 
         Assertions.assertThat(employee.getId()).isGreaterThan(0);
         Assertions.assertThat(employee.getName().equals("Mark"));
@@ -46,8 +57,14 @@ public class EmployeeRepositoryTests {
 
         Employee employee = employeeRepository.findById(1).orElseThrow();
 
+        Assertions.assertThat(employee.getDeleted()).isEqualTo(false);
+        Assertions.assertThat(employee.getFotos()).isEmpty();
+        Assertions.assertThat(employee.getEmail()).isNotEmpty();
         Assertions.assertThat(employee.getId()).isEqualTo(1);
 
+        employee = employeeRepository.findById(2).orElseThrow();
+        Assertions.assertThat(employee.getDeleted()).isEqualTo(false);
+        Assertions.assertThat(employee.getEmail()).isEqualTo("2_123@gmail.com");
     }
 
     @Test
@@ -57,6 +74,7 @@ public class EmployeeRepositoryTests {
         List<Employee> employeesList = employeeRepository.findAll();
 
         Assertions.assertThat(employeesList.size()).isGreaterThan(0);
+        Assertions.assertThat(employeesList.size()).isEqualTo(2);
 
     }
 
@@ -66,11 +84,14 @@ public class EmployeeRepositoryTests {
     public void updateEmployeeTest() {
 
         Employee employee = employeeRepository.findById(1).get();
-
         employee.setName("Martin");
         Employee employeeUpdated = employeeRepository.save(employee);
-
         Assertions.assertThat(employeeUpdated.getName()).isEqualTo("Martin");
+
+        Employee employee2 = employeeRepository.findById(2).get();
+        employee.setEmail("email@gmail.com");
+        Employee employeeUpdated2 = employeeRepository.save(employee);
+        Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("email@gmail.com");
 
     }
 
@@ -83,17 +104,16 @@ public class EmployeeRepositoryTests {
 
         employeeRepository.delete(employee);
 
-        //repository.deleteById(1L);
-
         Employee employee1 = null;
 
         Optional<Employee> optionalAuthor = Optional.ofNullable(employeeRepository.findByName("Martin"));
-
-        if (optionalAuthor.isPresent()) {
+       if (optionalAuthor.isPresent()) {
             employee1 = optionalAuthor.get();
         }
 
         Assertions.assertThat(employee1).isNull();
     }
+
+
 
 }
