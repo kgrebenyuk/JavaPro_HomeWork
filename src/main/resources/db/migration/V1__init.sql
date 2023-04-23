@@ -1,3 +1,15 @@
+create table if not exists public.passports
+(
+    id            serial
+    primary key,
+    birth_date    date,
+    fisrt_name    varchar(255),
+    second_name   varchar(255),
+    serial_number uuid,
+    first_name    varchar(255),
+    is_free       boolean
+    );
+
 create table public.users
 (
     id          serial
@@ -24,3 +36,4 @@ create table public.fotos
         constraint fkw2iktuv1pwk9mmmty9unt2dd
             references public.users
 );
+
