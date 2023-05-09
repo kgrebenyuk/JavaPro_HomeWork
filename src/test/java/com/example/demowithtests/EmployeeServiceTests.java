@@ -10,7 +10,10 @@ import com.example.demowithtests.service.Employee.EmployeeService;
 import com.example.demowithtests.service.Employee.EmployeeServiceBean;
 //import com.example.demowithtests.service.workplace.WorkplaceService;
 import com.example.demowithtests.service.Workplace.WorkplaceService;
+import com.example.demowithtests.util.EmailAbsentException;
+import com.example.demowithtests.util.IdIsNotExistException;
 import com.example.demowithtests.util.ResourceNotFoundException;
+import com.example.demowithtests.util.UserIsNotExistException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -43,19 +46,20 @@ public class EmployeeServiceTests {
     @InjectMocks
     private EmployeeServiceBean service;
 
-    @Mock
-    private EntityManager entityManager;
-
-    @Mock
-    private WorkplaceService workplaceService;
-    @Mock
-    private EmployeeService employeeService;
+//    @Mock
+//    private EntityManager entityManager;
+//
+//    @Mock
+//    private WorkplaceService workplaceService;
+//    @Mock
+//    private EmployeeService employeeService;
 
 
     @Test
     public void whenSaveEmployee_shouldReturnEmployee() {
         Employee employee = new Employee();
         employee.setName("Mark");
+        employee.setEmail("Mark@gmail.com");
 
         when(employeeRepository.save(ArgumentMatchers.any(Employee.class))).thenReturn(employee);
 
@@ -63,6 +67,15 @@ public class EmployeeServiceTests {
 
         assertThat(created.getName()).isSameAs(employee.getName());
         verify(employeeRepository).save(employee);
+    }
+
+    @Test(expected = EmailAbsentException.class)
+    public void whenSaveEmployeeWithoutEmail_shouldReturnEmailAbsentException() {
+        Employee employee = new Employee();
+        employee.setName("Mark");
+       // employee.setEmail("Mark@gmail.com");
+
+         Employee created = service.create(employee);
     }
 
     @Test
@@ -78,7 +91,8 @@ public class EmployeeServiceTests {
         verify(employeeRepository).findById(employee.getId());
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+   //   @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = IdIsNotExistException.class)
     public void should_throw_exception_when_employee_doesnt_exist() {
         Employee employee = new Employee();
         employee.setId(89);
@@ -87,5 +101,4 @@ public class EmployeeServiceTests {
         given(employeeRepository.findById(anyInt())).willReturn(Optional.empty());
         service.getById(employee.getId());
     }
-
 }

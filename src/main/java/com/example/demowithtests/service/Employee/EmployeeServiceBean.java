@@ -48,13 +48,13 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Transactional
     public Employee save(Employee employee) {
-   //     entityManager.persist(employee);
-       return entityManager.merge(employee);
+        //     entityManager.persist(employee);
+        return entityManager.merge(employee);
     }
 
     @Transactional
     public void testDetach(Integer id) {
- //       Employee employee = employeeRepository.findById(id).orElseThrow(IdIsNotExistException:: new);
+        //       Employee employee = employeeRepository.findById(id).orElseThrow(IdIsNotExistException:: new);
         Employee employee = entityManager.find(Employee.class, id);
         entityManager.detach(employee);
         entityManager.remove(employee);
