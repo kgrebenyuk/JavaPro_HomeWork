@@ -28,6 +28,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "select e from Employee e join e.fotos a where a.creationTime < :data")
     List<Employee> findEmployeeOldFoto(Date data);
 
+
     @Query(value = "select employees.email from employees join addresses on addresses.employee_id = employees.id\n" +
             "where (employees.country = 'Ukraine'and addresses.country = 'Poland' and address_has_active = 'true')", nativeQuery = true)
     List<String> findEmployeeChangedCountry(String fromCountry, String toCountry);
